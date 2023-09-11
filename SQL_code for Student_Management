@@ -1,0 +1,116 @@
+CREATE TABLE `Student_Management_user_ID` (
+    `User_ID` int  NOT NULL ,
+    `User_name` varchar(50)  NOT NULL ,
+    `Sign_up_on` DATE  NOT NULL ,
+    `email_ID` Text  NOT NULL ,
+    `Student_ID` int  NOT NULL ,
+    PRIMARY KEY (
+        `User_ID`
+    )
+);
+
+CREATE TABLE `Student_Management_Parent_Detail` (
+    `Parent_ID` int  NOT NULL ,
+    `Father_firstname` TEXT  NOT NULL ,
+    `Father_lastname` TEXT  NOT NULL ,
+    `Father_contact_no` int8  NOT NULL ,
+    `Father_CNIC` int8  NOT NULL ,
+    `Father_JD` TEXT  NOT NULL ,
+    `Mother_firstname` TEXT  NOT NULL ,
+    `Mother_lastname` TEXT  NOT NULL ,
+    `Mother_occupation` TEXT  NOT NULL ,
+    `Mother_CNIC` int8  NOT NULL ,
+    `Student_ID` int  NOT NULL ,
+    PRIMARY KEY (
+        `Parent_ID`
+    )
+);
+
+CREATE TABLE `Student_Management_Teacher_Detail` (
+    `teacher_ID` int  NOT NULL ,
+    `teacher_firstname` TEXT  NOT NULL ,
+    `teacher_lastname` TEXT  NOT NULL ,
+    `teacher_email` varchar(50)  NOT NULL ,
+    `teacher_contact` int8  NOT NULL ,
+    `teacher_CNIC` int8  NOT NULL ,
+    `Class_ID` int  NOT NULL ,
+    `Subject_ID` int  NOT NULL ,
+    `temp` int  NOT NULL ,
+    PRIMARY KEY (
+        `teacher_ID`
+    )
+);
+
+CREATE TABLE `Student_Management_Class_Detail` (
+    `Class_ID` int  NOT NULL ,
+    `Class_teacher` TEXT  NOT NULL ,
+    `Class_name` TEXT  NOT NULL ,
+    `Student_ID` int  NOT NULL ,
+    `Subject_ID` int  NOT NULL ,
+    `temp` int  NOT NULL ,
+    PRIMARY KEY (
+        `Class_ID`
+    )
+);
+
+CREATE TABLE `Student_Management_Student_Detial` (
+    `Student_ID` int  NOT NULL ,
+    `Student_Username` TEXT  NOT NULL ,
+    `Student_firstname` TEXT  NOT NULL ,
+    `Student_lastname` TEXT  NOT NULL ,
+    `Student_Email` varchar(100)  NOT NULL ,
+    `Student_Roll_No` varchar(100)  NOT NULL ,
+    `Student_parent_ID` int  NOT NULL ,
+    `Student_Class_ID` int  NOT NULL ,
+    `Student_CNIC` int8  NOT NULL ,
+    PRIMARY KEY (
+        `Student_ID`
+    )
+);
+
+CREATE TABLE `Student_Management_Subject_Detail` (
+    `Subject_ID` int  NOT NULL ,
+    `Subject_Head` varchar(100)  NOT NULL ,
+    `Subject_Class` varchar(100)  NOT NULL ,
+    `temp` int  NOT NULL ,
+    PRIMARY KEY (
+        `Subject_ID`
+    )
+);
+
+CREATE TABLE `Student_Management_Subject_teachers` (
+    `temp` int  NOT NULL ,
+    `teacher_ID` int  NOT NULL ,
+    `Subject_ID` int  NOT NULL ,
+    `class_ID` int  NOT NULL ,
+    PRIMARY KEY (
+        `temp`
+    )
+);
+
+ALTER TABLE `Student_Management_user_ID` ADD CONSTRAINT `fk_Student_Management_user_ID_Student_ID` FOREIGN KEY(`Student_ID`)
+REFERENCES `Student_Management_Student_Detial` (`Student_ID`);
+
+ALTER TABLE `Student_Management_Parent_Detail` ADD CONSTRAINT `fk_Student_Management_Parent_Detail_Student_ID` FOREIGN KEY(`Student_ID`)
+REFERENCES `Student_Management_Student_Detial` (`Student_ID`);
+
+ALTER TABLE `Student_Management_Teacher_Detail` ADD CONSTRAINT `fk_Student_Management_Teacher_Detail_Class_ID` FOREIGN KEY(`Class_ID`)
+REFERENCES `Student_Management_Class_Detail` (`Class_ID`);
+
+ALTER TABLE `Student_Management_Teacher_Detail` ADD CONSTRAINT `fk_Student_Management_Teacher_Detail_Subject_ID` FOREIGN KEY(`Subject_ID`)
+REFERENCES `Student_Management_Subject_Detail` (`Subject_ID`);
+
+ALTER TABLE `Student_Management_Teacher_Detail` ADD CONSTRAINT `fk_Student_Management_Teacher_Detail_temp` FOREIGN KEY(`temp`)
+REFERENCES `Student_Management_Subject_teachers` (`temp`);
+
+ALTER TABLE `Student_Management_Class_Detail` ADD CONSTRAINT `fk_Student_Management_Class_Detail_Student_ID` FOREIGN KEY(`Student_ID`)
+REFERENCES `Student_Management_Student_Detial` (`Student_ID`);
+
+ALTER TABLE `Student_Management_Class_Detail` ADD CONSTRAINT `fk_Student_Management_Class_Detail_Subject_ID` FOREIGN KEY(`Subject_ID`)
+REFERENCES `Student_Management_Subject_Detail` (`Subject_ID`);
+
+ALTER TABLE `Student_Management_Class_Detail` ADD CONSTRAINT `fk_Student_Management_Class_Detail_temp` FOREIGN KEY(`temp`)
+REFERENCES `Student_Management_Subject_teachers` (`temp`);
+
+ALTER TABLE `Student_Management_Subject_Detail` ADD CONSTRAINT `fk_Student_Management_Subject_Detail_temp` FOREIGN KEY(`temp`)
+REFERENCES `Student_Management_Subject_teachers` (`temp`);
